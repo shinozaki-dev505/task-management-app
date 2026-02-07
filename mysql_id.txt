@@ -1,0 +1,8 @@
+-- task_user というユーザーを作成し、パスワードを 'task_pass' に設定
+CREATE USER 'task_user'@'localhost' IDENTIFIED BY 'task_pass';
+
+-- 作成したユーザーに task_manager_db への全権限を付与
+GRANT ALL PRIVILEGES ON task_manager_db.* TO 'task_user'@'localhost';
+
+-- 権限を即時反映させる
+FLUSH PRIVILEGES;
