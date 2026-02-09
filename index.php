@@ -1,7 +1,7 @@
 <?php 
 // Task.php を読み込み、定数を参照できるようにします
 require_once dirname(__FILE__) . '/Task.php'; 
-declare(strict_types=1);
+//declare(strict_types=1);
 ?>
 
 <!DOCTYPE html>

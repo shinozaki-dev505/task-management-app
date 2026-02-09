@@ -123,7 +123,7 @@ try {
             </table>
         <?php endif; ?>
         
-        <p style="margin-top: 30px;"><a href="index.html">← 新規タスク登録へ戻る</a></p>
+        <p style="margin-top: 30px;"><a href="index.php">← 新規タスク登録へ戻る</a></p>
     </div>
 </body>
 </html>

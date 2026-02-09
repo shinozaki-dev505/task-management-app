@@ -11,9 +11,22 @@ $config = require_once dirname(__FILE__) . '/config.php';
 // POSTリクエストかどうかを確認
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     // POSTリクエスト以外の場合は、登録ページにリダイレクト
-    header('Location: index.html');
+    header('Location: index.php');
     exit;
 }
+
+//////////////////////////////////////////////////////////////////
+// フォームデータの取得（デバッグ版）
+$task_name = $_POST['task_name'] ?? '';
+
+// 一時的にキャスト(int)を外して、何が届いているか確認します
+$priority_raw = $_POST['priority'] ?? '未受信'; 
+
+// 画面に表示して一時停止
+echo "デバッグ: フォームから届いた生の値は「" . $priority_raw . "」です。<br>";
+echo "デバッグ: これを(int)に変換すると「" . (int)$priority_raw . "」になります。<br>";
+exit; // ここで処理を止める
+//////////////////////////////////////////////////////////////////
 
 // フォームデータの取得
 $task_name = $_POST['task_name'] ?? '';
@@ -80,7 +93,7 @@ if (empty($task_name)) {
             <p>タスク「<?php echo htmlspecialchars($task_name); ?>」が正常に登録されました。</p>
         <?php endif; ?>
 
-        <p><a href="index.html">? 新規タスク登録へ戻る</a></p>
+        <p><a href="index.php">? 新規タスク登録へ戻る</a></p>
         <p><a href="list_tasks.php">? タスク一覧へ</a></p>
     </div>
 </body>

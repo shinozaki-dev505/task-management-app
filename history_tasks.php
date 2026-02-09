@@ -86,7 +86,7 @@ try {
         
         <div style="margin-top: 30px;">
             <p><a href="list_tasks.php">◀ 現在のタスク一覧に戻る</a></p>
-            <p><a href="index.html">▶ 新規タスク登録へ</a></p>
+            <p><a href="index.php">▶ 新規タスク登録へ</a></p>
         </div>
     </div>
 </body>

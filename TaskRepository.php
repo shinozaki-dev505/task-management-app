@@ -35,7 +35,7 @@ class TaskRepository
         return $stmt->execute([
             ':name' => $task->getName(),
             // privateなpriorityプロパティを外部から取得するためのゲッターが必要です
-            ':priority' => $this->getPriorityValue($task), 
+            ':priority' => $task->getPriority(), 
             ':progress' => $task->getProgress(),
         ]);
     }
