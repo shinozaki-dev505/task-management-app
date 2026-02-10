@@ -15,19 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-//////////////////////////////////////////////////////////////////
-// フォームデータの取得（デバッグ版）
-$task_name = $_POST['task_name'] ?? '';
-
-// 一時的にキャスト(int)を外して、何が届いているか確認します
-$priority_raw = $_POST['priority'] ?? '未受信'; 
-
-// 画面に表示して一時停止
-echo "デバッグ: フォームから届いた生の値は「" . $priority_raw . "」です。<br>";
-echo "デバッグ: これを(int)に変換すると「" . (int)$priority_raw . "」になります。<br>";
-exit; // ここで処理を止める
-//////////////////////////////////////////////////////////////////
-
 // フォームデータの取得
 $task_name = $_POST['task_name'] ?? '';
 $priority_int = (int)($_POST['priority'] ?? Task::PRIORITY_MIDDLE); // int型にキャスト
