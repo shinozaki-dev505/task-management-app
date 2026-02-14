@@ -42,6 +42,7 @@ FLUSH PRIVILEGES;
 2. テーブルの作成
 続いて、以下のSQLを実行して tasks テーブルを作成してください。
 
+```sql
 SQL
 USE task_manager_db;
 
@@ -53,6 +54,8 @@ CREATE TABLE IF NOT EXISTS tasks (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
 3. 環境設定
 config.phpの作成: config.php を作成し、自身の環境（ホスト、ユーザー、パスワード）を記述します。
 
