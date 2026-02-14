@@ -47,3 +47,10 @@ CREATE TABLE IF NOT EXISTS tasks (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+3. 環境設定
+config.php を作成し、自身の環境（ホスト、ユーザー、パスワード）を記述します。
+
+XAMPP等の環境でポート番号が異なる場合は、config.php 内のポート指定を適宜変更してください。
+
+ブラウザで index.php（または index.html）にアクセスして実行します。
