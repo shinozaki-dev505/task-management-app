@@ -22,6 +22,35 @@
 - **操作性:** ユーザーが直感的に現在の進捗を把握できるよう、レイアウトを工夫しました。
 
 ## 🔧 セットアップ
-1. MySQLでデータベース `task_manager_db` を作成します。
-2. `config.php` を作成し、自身の環境（ホスト、ユーザー、パスワード）を記述します。
-3. XAMPP等の環境で `index.html` にアクセスして実行します。
+本アプリケーションを動作させるためには、以下の設定を行ってください。
+※開発環境の競合回避のため、MySQLポートを 3307 に設定しています。
+
+**1. データベース・ユーザーの作成**
+MySQLにログインし、以下のSQLを実行してください。
+
+SQL
+-- データベース作成
+CREATE DATABASE IF NOT EXISTS task_manager_db CHARACTER SET utf8mb4;
+USE task_manager_db;
+
+-- 実行ユーザー作成と権限付与
+CREATE USER IF NOT EXISTS 'task_user'@'localhost' IDENTIFIED BY 'task_pass';
+GRANT ALL PRIVILEGES ON task_manager_db.* TO 'task_user'@'localhost';
+FLUSH PRIVILEGES;
+**2. テーブルの作成**
+SQL
+CREATE TABLE IF NOT EXISTS tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    task_name VARCHAR(255) NOT NULL,
+    priority INT DEFAULT 2,    -- 1:高, 2:中, 3:低
+    progress INT DEFAULT 0,    -- 0?100
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+**3. 環境設定**
+config.php を作成し、自身の環境（ホスト、ユーザー、パスワード）を記述します。
+
+XAMPP等の環境でポート番号が異なる場合は、config.php 内のポート指定を適宜変更してください。
+
+ブラウザで index.php（または index.html）にアクセスして実行します。
+
