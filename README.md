@@ -37,6 +37,8 @@ USE task_manager_db;
 CREATE USER IF NOT EXISTS 'task_user'@'localhost' IDENTIFIED BY 'task_pass';
 GRANT ALL PRIVILEGES ON task_manager_db.* TO 'task_user'@'localhost';
 FLUSH PRIVILEGES;
+```
+
 2. テーブルの作成
 続いて、以下のSQLを実行して tasks テーブルを作成してください。
 
