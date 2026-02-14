@@ -37,7 +37,23 @@ USE task_manager_db;
 CREATE USER IF NOT EXISTS 'task_user'@'localhost' IDENTIFIED BY 'task_pass';
 GRANT ALL PRIVILEGES ON task_manager_db.* TO 'task_user'@'localhost';
 FLUSH PRIVILEGES;
-
-### ２. テーブルの作成
+2. テーブルの作成
 続いて、以下のSQLを実行して tasks テーブルを作成してください。
 
+SQL
+USE task_manager_db;
+
+CREATE TABLE IF NOT EXISTS tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    task_name VARCHAR(255) NOT NULL,
+    priority INT DEFAULT 2,    -- 1:高, 2:中, 3:低
+    progress INT DEFAULT 0,    -- 0〜100
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+3. 環境設定
+config.phpの作成: config.php を作成し、自身の環境（ホスト、ユーザー、パスワード）を記述します。
+
+ポート指定: XAMPP等の環境でポート番号が異なる場合は、config.php 内のポート指定を適宜変更してください。
+
+実行: ブラウザで index.php にアクセスして実行します。
