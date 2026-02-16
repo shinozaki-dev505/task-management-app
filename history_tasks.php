@@ -14,8 +14,6 @@ try {
     ]);
 
     $repository = new TaskRepository($pdo);
-    
-    // 【重要】前回作成した「完了済みだけを取得するメソッド」を呼び出します
     $tasks = $repository->findCompleted();
 
 } catch (PDOException $e) {
@@ -29,54 +27,86 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>タスク管理システム - 完了済み履歴</title>
-    <link rel="stylesheet" href="style.css"> 
+    <title>完了済みタスク履歴 - タスク管理システム</title>
     <style>
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        /* 完了済み専用のスタイル：少し文字を薄くして、達成感を出す */
-        .completed-row { background-color: #f9f9f9; color: #666; }
-        .status-badge { 
-            background-color: #5cb85c; 
-            color: white; 
-            padding: 2px 8px; 
-            border-radius: 10px; 
-            font-size: 0.8em; 
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            font-family: sans-serif;
         }
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #fcfcfc; color: #777; font-size: 0.9em; }
+        .task-name-completed { color: #555; text-decoration: line-through; }
+        .btn-restore { color: #007bff; text-decoration: none; font-size: 0.9em; margin-right: 15px; }
+        .btn-delete { color: #d9534f; text-decoration: none; font-size: 0.9em; }
+        .footer-nav { margin-top: 40px; display: flex; gap: 20px; }
+        .btn-back { text-decoration: none; color: #666; font-size: 0.9em; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>完了済みタスク履歴</h2>
-        <p>これまでに完了したタスクの一覧です。</p>
+        <div class="header-area">
+            <h2 style="margin: 0; color: #333;">✅ 完了済みタスク履歴</h2>
+            <span style="color: #999; font-size: 0.9em;">これまでに達成したタスク</span>
+        </div>
 
         <?php if (isset($error_message)): ?>
             <p style="color: red;"><?php echo $error_message; ?></p>
         <?php endif; ?>
 
         <?php if (empty($tasks)): ?>
-            <p>完了したタスクはまだありません。</p>
+            <p style="text-align: center; color: #bbb; padding: 40px;">完了したタスクはまだありません。</p>
         <?php else: ?>
             <table>
                 <thead>
                     <tr>
-                        <th>タスク名</th>
+                        <th style="width: 35%;">タスク名</th>
                         <th>優先度</th>
-                        <th>ステータス</th>
-                        <th>操作</th>
+                        <th>登録日</th>
+                        <th>完了日</th>
+                        <th style="text-align: center;">所要日数</th>
+                        <th>操作</th> 
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($tasks as $task): ?>
-                        <tr class="completed-row">
-                            <td><del><?php echo htmlspecialchars($task->getName()); ?></del></td>
-                            <td><?php echo $task->getPriorityAsString(); ?></td>
-                            <td><span class="status-badge">完了(100%)</span></td>
+                    <?php foreach ($tasks as $task): 
+                        // 登録時と完了時の「時間」も含めた計算
+                        $start = new DateTime($task->getCreatedAt());
+                        $end = new DateTime($task->getUpdatedAt());
+                        
+                        // 差分を秒単位で取得し、1日の秒数(86400秒)で割る
+                        $diffSeconds = $end->getTimestamp() - $start->getTimestamp();
+                        $diffDays = $diffSeconds / 86400;
+
+                        // もし完了時間が登録時間より前（データ上の矛盾）なら0、それ以外は小数点第1位まで表示
+                        $displayDays = ($diffDays > 0) ? number_format($diffDays, 1) : "0.0";
+                    ?>
+                        <tr>
+                            <td><span class="task-name-completed"><?php echo htmlspecialchars($task->getName()); ?></span></td>
+                            <td><span style="color: #888; font-size: 0.9em;"><?php echo $task->getPriorityAsString(); ?></span></td>
+                            <td style="font-size: 0.85em; color: #666;"><?php echo date('m/d H:i', strtotime($task->getCreatedAt())); ?></td>
+                            <td style="font-size: 0.85em; color: #666;"><?php echo date('m/d H:i', strtotime($task->getUpdatedAt())); ?></td>
+                            <td style="text-align: center;">
+                                <span style="font-weight: bold; color: #2e7d32;">
+                                    <?php echo $displayDays; ?>日
+                                </span>
+                            </td>
                             <td>
-                                <a href="delete_task.php?id=<?php echo $task->getId(); ?>" 
-                                   style="color: #d9534f;" 
-                                   onclick="return confirm('履歴から完全に削除してもよろしいですか？')">削除</a>
+                                <a href="update_progress.php?id=<?php echo $task->getId(); ?>&progress=0" class="btn-restore" onclick="return confirm('未完了に戻しますか？')">戻す</a>
+                                <a href="delete_task.php?id=<?php echo $task->getId(); ?>&from=history" class="btn-delete" onclick="return confirm('完全に削除しますか？')">削除</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -84,9 +114,9 @@ try {
             </table>
         <?php endif; ?>
         
-        <div style="margin-top: 30px;">
-            <p><a href="list_tasks.php">◀ 現在のタスク一覧に戻る</a></p>
-            <p><a href="index.php">▶ 新規タスク登録へ</a></p>
+        <div class="footer-nav">
+            <a href="list_tasks.php" class="btn-back">◀ 現在のタスク一覧に戻る</a>
+            <a href="index.php" class="btn-back">▶ 新規タスク登録へ</a>
         </div>
     </div>
 </body>

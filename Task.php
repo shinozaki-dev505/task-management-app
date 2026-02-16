@@ -1,34 +1,49 @@
 <?php
 declare(strict_types=1);
 
-Class Task{
-    public const PRIORITY_LOW=0;
-    public const PRIORITY_MIDDLE=1;
-    public const PRIORITY_HIGH=2;
+class Task {
+    public const PRIORITY_LOW = 0;
+    public const PRIORITY_MIDDLE = 1;
+    public const PRIORITY_HIGH = 2;
 
     private string $name;
     private int $priority;
     private int $progress;
-    private ?int $id; // ★追加：IDを保存する変数
+    private ?int $id;
+    // ★追加：日付・時間のプロパティ
+    private ?string $createdAt;
+    private ?string $updatedAt;
+    private ?string $completedAt;
 
     /**
-     * コンストラクタ（$idを追加）
+     * コンストラクタ（日付引数を末尾に追加）
      */
-    public function __construct(string $name, int $priority = self::PRIORITY_MIDDLE, int $progress = 0, ?int $id = null)
-    {
+    public function __construct(
+        string $name, 
+        int $priority = self::PRIORITY_MIDDLE, 
+        int $progress = 0, 
+        ?int $id = null,
+        ?string $createdAt = null,  // ★追加
+        ?string $updatedAt = null,  // ★追加
+        ?string $completedAt = null // ★追加
+    ) {
         $this->name = $name;
         $this->setPriority($priority);
         $this->setProgress($progress);
-        $this->id = $id; // ★追加
+        $this->id = $id;
+        $this->createdAt = $createdAt; // ★追加
+        $this->updatedAt = $updatedAt; // ★追加
+        $this->completedAt = $completedAt; // ★追加
     }
 
-    // ★追加：IDのゲッター
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    public function getId(): ?int { return $this->id; }
+    
+    // ★追加：日付取得用のゲッター
+    public function getCreatedAt(): ?string { return $this->createdAt; }
+    public function getUpdatedAt(): ?string { return $this->updatedAt; }
+    public function getCompletedAt(): ?string { return $this->completedAt; }
 
-    // --- 以下、既存のメソッド（getName, setPriorityなどはそのまま） ---
+    // --- 以下、既存のメソッド ---
     public function getName(): string { return $this->name; }
     public function setName(string $name): void { $this->name = $name; }
     public function getPriority(): int { return $this->priority; }
