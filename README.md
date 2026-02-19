@@ -12,7 +12,7 @@ AIを活用しながら、Repositoryパターンの採用やデータ解析（�
 
 ## 🛠 使用技術
 - **Language**: PHP 8.x
-- **Database**: MySQL 8.0 (MariaDB) / ポート 3307
+- **Database**: MySQL 8.0 (MariaDB) / ポート 3306 (標準)
 - **Frontend**: HTML5, CSS3 (Vanilla JSなしのピュアな操作感)
 
 ## 💡 こだわったポイント
@@ -48,7 +48,17 @@ CREATE TABLE IF NOT EXISTS tasks (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-2. 環境設定
-config.php の user と password を、作成したユーザー情報に合わせて書き換えます。
+### 2. 環境設定
+config.php（またはDB接続箇所）を、ご自身の環境に合わせて編集してください。
 
+Host: localhost
+
+Port: 3306
+
+User: (設定したユーザー名)
+
+Password: (設定したパスワード)
+
+### 3. 実行
 ブラウザで index.php にアクセスして実行します。
+
