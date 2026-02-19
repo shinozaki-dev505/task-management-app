@@ -15,6 +15,7 @@ AIを活用しながら、Repositoryパターンの採用やデータ解析（�
 * **1.HOME（新規登録画面）**: `index.php`
   タスクを素早く入力・登録する入口です。
   <img width="638" src="https://github.com/user-attachments/assets/e2f1129a-8494-433f-933a-6184914cdaf2" />
+
 ↓ 登録後、自動遷移
 * **2.タスク一覧画面**: `list_tasks.php`
   現在のタスク管理と操作のメイン画面です。
