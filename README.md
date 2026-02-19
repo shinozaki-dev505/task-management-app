@@ -21,7 +21,9 @@ AIを活用しながら、Repositoryパターンの採用やデータ解析（�
   <img width="890" src="https://github.com/user-attachments/assets/9e64da8c-81c0-43ee-b8b5-96f863708725" />
   
   ・検索実行 → 同画面で絞り込み
+  
 　・更新・完了ボタン → 処理後、同画面へリダイレクト
+ 
 　・履歴リンク → 完了履歴へ
 
 * **3.完了履歴画面**: history_tasks.php
