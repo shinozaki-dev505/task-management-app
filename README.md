@@ -10,10 +10,11 @@ AIを活用しながら、Repositoryパターンの採用やデータ解析（�
 - **完了履歴**: 完了したタスクの「登録〜完了までの所要日数」を小数点第1位まで自動計算して表示。
 - **レスポンシブデザイン**: 清潔感のある、広々としたUI設計。
 - **画面イメージ**:**
-HOME（新規登録画面）: index.php
+
+・HOME（新規登録画面）: index.php
 <img width="638" height="477" alt="image" src="https://github.com/user-attachments/assets/e2f1129a-8494-433f-933a-6184914cdaf2" />
 
-タスク一覧画面: list_tasks.php
+・タスク一覧画面: list_tasks.php
 <img width="890" height="518" alt="image" src="https://github.com/user-attachments/assets/9e64da8c-81c0-43ee-b8b5-96f863708725" />
 
 ## 🛠 使用技術
