@@ -9,15 +9,28 @@ AIを活用しながら、Repositoryパターンの採用やデータ解析（�
 - **進捗管理**: 0〜100%の進捗を更新し、プログレスバーで可視化。
 - **完了履歴**: 完了したタスクの「登録〜完了までの所要日数」を小数点第1位まで自動計算して表示。
 - **レスポンシブデザイン**: 清潔感のある、広々としたUI設計。
-### 📸 画面イメージ
+### 📸 画面遷移図
+ユーザーの動線を定義します。
 
-* **HOME（新規登録画面）**: `index.php`
-  
+* **1.HOME（新規登録画面）**: `index.php`
+  タスクを素早く入力・登録する入口です。
   <img width="638" src="https://github.com/user-attachments/assets/e2f1129a-8494-433f-933a-6184914cdaf2" />
-
-* **タスク一覧画面**: `list_tasks.php`
-  
+↓ 登録後、自動遷移
+* **2.タスク一覧画面**: `list_tasks.php`
+  現在のタスク管理と操作のメイン画面です。
   <img width="890" src="https://github.com/user-attachments/assets/9e64da8c-81c0-43ee-b8b5-96f863708725" />
+
+  ・検索実行 → 同画面で絞り込み
+
+　・更新・完了ボタン → 処理後、同画面へリダイレクト
+
+　・履歴リンク → 完了履歴へ
+
+* **3.完了履歴画面**: history_tasks.php
+  完了したタスクの記録と所要日数を確認できます。
+　<img width="890" height="575" alt="image" src="https://github.com/user-attachments/assets/55addb3f-5781-4cc8-b1f6-0eee37df3934" />
+
+  ・戻るボタン → タスク一覧へ
 
 ## 🛠 使用技術
 - **Language**: PHP 8.x
