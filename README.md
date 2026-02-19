@@ -12,8 +12,9 @@ AIを活用しながら、Repositoryパターンの採用やデータ解析（�
 - **画面イメージ**:**
 HOME（新規登録画面）: index.php
 <img width="638" height="477" alt="image" src="https://github.com/user-attachments/assets/e2f1129a-8494-433f-933a-6184914cdaf2" />
+
 タスク一覧画面: list_tasks.php
-<img width="890" height="529" alt="image" src="https://github.com/user-attachments/assets/5674d41f-17a1-4bf5-bc77-1f514443a82d" />
+<img width="890" height="518" alt="image" src="https://github.com/user-attachments/assets/9e64da8c-81c0-43ee-b8b5-96f863708725" />
 
 ## 🛠 使用技術
 - **Language**: PHP 8.x
