@@ -9,6 +9,11 @@ AIを活用しながら、Repositoryパターンの採用やデータ解析（�
 - **進捗管理**: 0〜100%の進捗を更新し、プログレスバーで可視化。
 - **完了履歴**: 完了したタスクの「登録〜完了までの所要日数」を小数点第1位まで自動計算して表示。
 - **レスポンシブデザイン**: 清潔感のある、広々としたUI設計。
+- **画面イメージ**:**
+HOME（新規登録画面）: index.php
+<img width="638" height="477" alt="image" src="https://github.com/user-attachments/assets/e2f1129a-8494-433f-933a-6184914cdaf2" />
+タスク一覧画面: list_tasks.php
+<img width="890" height="529" alt="image" src="https://github.com/user-attachments/assets/5674d41f-17a1-4bf5-bc77-1f514443a82d" />
 
 ## 🛠 使用技術
 - **Language**: PHP 8.x
