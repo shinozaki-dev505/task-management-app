@@ -65,12 +65,12 @@ try {
             border-radius: 4px;
         }
         .btn-search {
+            margin-top: 0;
             padding: 8px 20px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            font-size:14px;
+            height:42px;
+            display:flex;
+            align-items:center;
         }
 
         table { 
@@ -100,11 +100,19 @@ try {
         .priority-middle { color: #f0ad4e; }
         .priority-low { color: #999; }
         
-        .update-form { 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-            white-space: nowrap; /* 改行を防ぐ */
+        .update-form .input-progress{ 
+            display: inline-block; /*横並び */ 
+            whidth: 55px;
+            padding: 4px;
+            margin-bottom:0;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .update-form{
+            display: flex; /* 横並び */
+            align-items: center; /* 縦方向の中央揃え */
+            justify-content: flex-start; /* 左詰めに配置 */
+            gap: 5px; /* 要素間のスペース */
         }
         .input-progress { 
             width: 55px;
@@ -155,7 +163,7 @@ try {
                     <tr>
                         <th style="width: 40%;">タスク名</th>
                         <th>優先度</th>
-                        <th>登録日</th>
+                        <th>期日</th><th>登録日</th>
                         <th>進行度更新</th>
                         <th>進捗</th>
                         <th>操作</th> 
@@ -169,9 +177,15 @@ try {
                             default => 'priority-low',
                         };
                     ?>
-                        <tr>
+                        <?php 
+                            // アラート：例「3日前」から赤くする場合
+                            $isAlert = $task->isNearDeadline(3); 
+                            $rowClass = $isAlert ? 'class="deadline-alert"' : '';
+                        ?>
+                        <tr <?php echo $rowClass; ?>>
                             <td><strong><?php echo htmlspecialchars($task->getName()); ?></strong></td>
                             <td class="<?php echo $priority_class; ?>"><?php echo $task->getPriorityAsString(); ?></td>
+                            <td><?php echo htmlspecialchars($task->getDeadline() ?? '未設定'); ?></td>
                             <td style="font-size: 0.85em; color: #888;"><?php echo date('m/d H:i', strtotime($task->getCreatedAt())); ?></td>
                             <td>
                                 <form action="update_progress.php" method="POST" class="update-form">

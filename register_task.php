@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-// 必要なファイルを読み込みます
+// 必要なファイルを読み込み
 require_once dirname(__FILE__) . '/Task.php';
 require_once dirname(__FILE__) . '/TaskRepository.php';
 
@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $task_name = $_POST['task_name'] ?? '';
 $priority_int = (int)($_POST['priority'] ?? Task::PRIORITY_MIDDLE); // int型にキャスト
 $progress_int = (int)($_POST['progress'] ?? 0); // int型にキャスト
+$deadline = $_POST['deadline'] ?? null; // ★追加：画面からの期限を受け取る
 
 // 簡単なバリデーション
 if (empty($task_name)) {
@@ -28,7 +29,7 @@ if (empty($task_name)) {
 } else {
     try {
         // 1. データベース接続を確立
-        $dsn = "mysql:host={$config['db']['host']};port=3307;dbname={$config['db']['dbname']};charset=utf8mb4";
+        $dsn = "mysql:host={$config['db']['host']};port=3306;dbname={$config['db']['dbname']};charset=utf8mb4";
         $pdo = new PDO($dsn, $config['db']['user'], $config['db']['password'], [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         ]);
@@ -38,7 +39,7 @@ if (empty($task_name)) {
 
         // 3. フォームデータから新しいTaskオブジェクトを生成
         // Taskクラスのコンストラクタ内で、優先度と進行度のバリデーションが行われる
-        $newTask = new Task($task_name, $priority_int, $progress_int);
+        $newTask = new Task($task_name, $priority_int, $progress_int, $deadline);
         
         // 4. TaskRepositoryのsaveメソッドを使用してデータベースに登録
         if ($repository->save($newTask)) {
@@ -54,7 +55,7 @@ if (empty($task_name)) {
         $error_message = '入力されたデータが無効です: ' . $e->getMessage();
     } catch (PDOException $e) {
         // データベース接続または操作エラーを捕捉
-        // 本番環境では詳細なエラーメッセージは表示すべきではありません
+        // 本番環境では詳細なエラーメッセージは表示すべきでない
         $error_message = 'データベースエラーが発生しました。詳細: ' . $e->getMessage();
     } catch (Throwable $e) {
         $error_message = '予期せぬエラーが発生しました。';

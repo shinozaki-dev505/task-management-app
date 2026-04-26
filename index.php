@@ -1,5 +1,5 @@
 <?php 
-// Task.php を読み込み、定数を参照できるようにします
+// Task.php を読み込み、定数を参照
 require_once dirname(__FILE__) . '/Task.php'; 
 //declare(strict_types=1);
 ?>
@@ -36,6 +36,10 @@ require_once dirname(__FILE__) . '/Task.php';
                 <span class="progress-value" id="progress-output-detail">0%</span>
             </div>
             
+            <label for="deadline">期限</label>
+            <input type="date" name="deadline" id="deadline">
+            
+
             <button type="submit">タスクを登録</button>
         </form>
         

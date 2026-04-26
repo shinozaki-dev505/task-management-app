@@ -15,7 +15,7 @@ class TaskRepository {
      * 未完了タスクを検索（キーワードがあれば絞り込み）
      */
     public function searchIncomplete(string $keyword): array {
-        $sql = "SELECT id, name, priority, progress, created_at, updated_at, completed_at 
+        $sql = "SELECT id, name, priority, progress, deadline, created_at, updated_at, completed_at 
                 FROM {$this->table_name} 
                 WHERE progress < 100 AND name LIKE :keyword 
                 ORDER BY created_at DESC";
@@ -30,7 +30,7 @@ class TaskRepository {
      * 通常の未完了タスク取得
      */
     public function findIncomplete(): array {
-        $sql = "SELECT id, name, priority, progress, created_at, updated_at, completed_at 
+        $sql = "SELECT id, name, priority, progress, deadline, created_at, updated_at, completed_at 
                 FROM {$this->table_name} 
                 WHERE progress < 100 
                 ORDER BY created_at DESC";
@@ -48,6 +48,7 @@ class TaskRepository {
                 $row['name'],
                 (int)$row['priority'],
                 (int)$row['progress'],
+                $row['deadline'] ?? null, // 期限日があればセット                
                 (int)$row['id'],
                 $row['created_at'],
                 $row['updated_at'],
@@ -62,7 +63,7 @@ class TaskRepository {
      */
     public function findCompleted(): array
     {
-        $sql = "SELECT id, name, priority, progress, created_at, updated_at, completed_at 
+        $sql = "SELECT id, name, priority, progress, deadline, created_at, updated_at, completed_at 
                 FROM {$this->table_name} 
                 WHERE progress = 100 
                 ORDER BY updated_at DESC"; // 完了したのが新しい順に並べる
@@ -75,6 +76,7 @@ class TaskRepository {
                 $row['name'],
                 (int)$row['priority'],
                 (int)$row['progress'],
+                $row['deadline'], // ★ ここでDBの値をTaskに渡す
                 (int)$row['id'],
                 $row['created_at'],
                 $row['updated_at'],
@@ -109,8 +111,8 @@ class TaskRepository {
      * 新しいタスクをデータベースに保存する
      */
     public function save(Task $task): bool {
-        $sql = "INSERT INTO {$this->table_name} (name, priority, progress, created_at, updated_at) 
-                VALUES (:name, :priority, :progress, NOW(), NOW())";
+        $sql = "INSERT INTO {$this->table_name} (name, priority, progress, deadline, created_at, updated_at) 
+                VALUES (:name, :priority, :progress, :deadline, NOW(), NOW())";
         
         $stmt = $this->pdo->prepare($sql);
         
@@ -118,6 +120,7 @@ class TaskRepository {
             ':name'     => $task->getName(),
             ':priority' => $task->getPriority(),
             ':progress' => $task->getProgress(),
+            ':deadline' => $task->getDeadline() // ★追加：期限日も保存
         ]);
     }
 }

@@ -14,6 +14,8 @@ class Task {
     private ?string $createdAt;
     private ?string $updatedAt;
     private ?string $completedAt;
+    // ★追加：期限日プロパティ
+    private ?string $deadline;
 
     /**
      * コンストラクタ（日付引数を末尾に追加）
@@ -21,7 +23,8 @@ class Task {
     public function __construct(
         string $name, 
         int $priority = self::PRIORITY_MIDDLE, 
-        int $progress = 0, 
+        int $progress = 0,
+        ?string $deadline = null, // ★追加：引数に期限を追加         
         ?int $id = null,
         ?string $createdAt = null,  // ★追加
         ?string $updatedAt = null,  // ★追加
@@ -30,10 +33,11 @@ class Task {
         $this->name = $name;
         $this->setPriority($priority);
         $this->setProgress($progress);
+        $this->deadline = $deadline; // ★追加
         $this->id = $id;
         $this->createdAt = $createdAt; // ★追加
         $this->updatedAt = $updatedAt; // ★追加
-        $this->completedAt = $completedAt; // ★追加
+        $this->completedAt = $completedAt; // ★追加 
     }
 
     public function getId(): ?int { return $this->id; }
@@ -68,5 +72,20 @@ class Task {
             case self::PRIORITY_HIGH: return '高';
             default: return '不明';
         }
+    }
+
+    // アラート機能の追加
+    public function getDeadline(): ?string { return $this->deadline; }
+    public function isNearDeadline(int $daysBefore): bool {
+        if (!$this->deadline) return false; // 期限が設定されていない場合はfalse
+
+        $today = new DateTime('today'); // 今日の日付（時刻は00:00:00）
+        $dueDate = new DateTime($this->deadline);
+        
+        // 期限日から「設定日数」を引いた通知開始日
+        $alertStartDate = (clone $dueDate)->modify("-{$daysBefore} days");
+
+        // 「今日」が「通知開始日」以降、かつ「期限内」であればtrue
+        return ($today >= $alertStartDate);
     }
 }

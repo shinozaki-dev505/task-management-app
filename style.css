@@ -32,9 +32,17 @@ input[type="text"], input[type="number"], select {
     border-radius: 4px;
     box-sizing: border-box; /* paddingを含めたサイズで計算 */
 }
-input[type="range"] {
-    width: 90%;
-    margin-right: 10px;
+input[type="text"], 
+input[type="number"], 
+input[type="date"], /* ★ここに追加 */
+select {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px; /* ★10pxから20pxに増やすとゆとりが出ます */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 .progress-group {
     display: flex;
@@ -58,4 +66,15 @@ button {
 }
 button:hover {
     background-color: #4cae4c;
+}
+
+/* アラート */
+.deadline-alert {
+    background-color: #ffcccc !important; /* 薄い赤色 */
+    font-weight: bold;
+    color: #d00000; /* 文字も濃い赤に */
+}
+
+#deadline {
+    margin-bottom: 20px; /* ボタンとの間の余白 */
 }
