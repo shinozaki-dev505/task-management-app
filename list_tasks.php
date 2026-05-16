@@ -38,15 +38,6 @@ try {
     <title>タスク管理システム - タスク一覧</title>
     <link rel="stylesheet" href="style.css"> 
     <style>
-        /* 白地のコンテナを広く、余白を大きく設定 */
-        .container {
-            max-width: 1100px;    /* 幅を広げました */
-            margin: 30px auto;
-            padding: 40px;        /* 内側の余白を増やしてゆとりを持たせました */
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
 
         /* 検索フォームのスタイル */
         .search-box {
@@ -134,11 +125,10 @@ try {
 </head>
 <body>
     <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
-            <h2 style="margin: 0;">現在のタスク一覧</h2>
-            <a href="history_tasks.php" style="font-size: 0.9em; text-decoration: none; color: #007bff;">▶ 完了済みの履歴を見る</a>
+        <div class="list-header">
+            <h2>現在のタスク一覧</h2>
+            <a href="history_tasks.php" class="history-link">▶ 完了済みの履歴を見る</a>
         </div>
-
         <div class="search-box">
             <form action="list_tasks.php" method="GET" style="display: flex; width: 100%; gap: 10px;">
                 <input type="text" name="keyword" value="<?php echo htmlspecialchars($keyword); ?>" placeholder="キーワードを入力してタスクを検索...">
@@ -158,60 +148,62 @@ try {
                 <?php echo $keyword !== '' ? '検索条件に一致するタスクはありません。' : '現在、取り組むべきタスクはありません。'; ?>
             </p>
         <?php else: ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 40%;">タスク名</th>
-                        <th>優先度</th>
-                        <th>期日</th><th>登録日</th>
-                        <th>進行度更新</th>
-                        <th>進捗</th>
-                        <th>操作</th> 
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($tasks as $task):
-                        $priority_class = match($task->getPriority()) {
-                            Task::PRIORITY_HIGH => 'priority-high',
-                            Task::PRIORITY_MIDDLE => 'priority-middle',
-                            default => 'priority-low',
-                        };
-                    ?>
-                        <?php 
-                            // アラート：例「3日前」から赤くする場合
-                            $isAlert = $task->isNearDeadline(3); 
-                            $rowClass = $isAlert ? 'class="deadline-alert"' : '';
-                        ?>
-                        <tr <?php echo $rowClass; ?>>
-                            <td><strong><?php echo htmlspecialchars($task->getName()); ?></strong></td>
-                            <td class="<?php echo $priority_class; ?>"><?php echo $task->getPriorityAsString(); ?></td>
-                            <td><?php echo htmlspecialchars($task->getDeadline() ?? '未設定'); ?></td>
-                            <td style="font-size: 0.85em; color: #888;"><?php echo date('m/d H:i', strtotime($task->getCreatedAt())); ?></td>
-                            <td>
-                                <form action="update_progress.php" method="POST" class="update-form">
-                                    <input type="hidden" name="id" value="<?php echo $task->getId(); ?>">
-                                    <input type="number" name="progress" 
-                                           value="<?php echo $task->getProgress(); ?>" 
-                                           min="0" max="100" class="input-progress">
-                                    <span>%</span>
-                                    <button type="submit" class="btn-update">更新</button>
-                                </form>
-                            </td>
-                            <td>
-                                <div style="font-size: 0.8em; margin-bottom: 4px;"><?php echo $task->getProgress(); ?>%</div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: <?php echo $task->getProgress(); ?>%;"></div>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="complete_task.php?id=<?php echo $task->getId(); ?>" class="btn-complete">完了</a>
-                                <a href="delete_task.php?id=<?php echo $task->getId(); ?>" class="btn-delete" 
-                                   onclick="return confirm('このタスクを削除してもよろしいですか？')">削除</a>
-                            </td>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">タスク名</th>
+                            <th style="width: 8%;">優先度</th>
+                            <th style="width: 12%;">期日</th>
+                            <th style="width: 10%;">登録日</th>
+                            <th style="width: 15%;">進行度更新</th> <th style="width: 15%;">進捗</th>
+                            <th style="width: 10%;">操作</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tasks as $task):
+                            $priority_class = match($task->getPriority()) {
+                                Task::PRIORITY_HIGH => 'priority-high',
+                                Task::PRIORITY_MIDDLE => 'priority-middle',
+                                default => 'priority-low',
+                            };
+                        ?>
+                            <?php 
+                                // アラート：例「3日前」から赤くする場合
+                                $isAlert = $task->isNearDeadline(3); 
+                                $rowClass = $isAlert ? 'class="deadline-alert"' : '';
+                            ?>
+                            <tr <?php echo $rowClass; ?>>
+                                <td><strong><?php echo htmlspecialchars($task->getName()); ?></strong></td>
+                                <td class="<?php echo $priority_class; ?>"><?php echo $task->getPriorityAsString(); ?></td>
+                                <td><?php echo htmlspecialchars($task->getDeadline() ?? '未設定'); ?></td>
+                                <td style="font-size: 0.85em; color: #888;"><?php echo date('m/d H:i', strtotime($task->getCreatedAt())); ?></td>
+                                <td>
+                                    <form action="update_progress.php" method="POST" class="update-form">
+                                        <input type="hidden" name="id" value="<?php echo $task->getId(); ?>">
+                                        <input type="number" name="progress" 
+                                            value="<?php echo $task->getProgress(); ?>" 
+                                            min="0" max="100" class="input-progress">
+                                        <span>%</span>
+                                        <button type="submit" class="btn-update">更新</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <div style="font-size: 0.8em; margin-bottom: 4px;"><?php echo $task->getProgress(); ?>%</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: <?php echo $task->getProgress(); ?>%;"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="complete_task.php?id=<?php echo $task->getId(); ?>" class="btn-complete">完了</a>
+                                    <a href="delete_task.php?id=<?php echo $task->getId(); ?>" class="btn-delete" 
+                                    onclick="return confirm('このタスクを削除してもよろしいですか？')">削除</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php endif; ?>
         
         <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">

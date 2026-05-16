@@ -56,5 +56,11 @@ require_once dirname(__FILE__) . '/Task.php';
             progressOutputDetail.textContent = this.value + '%';
         }
     </script>
+
+    <div class="csv-actions">
+    <a href="download_csv.php" class="btn-csv" style="background-color: #28a745; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; font-weight: bold;">
+        📥 完了タスクをCSVで出力（Excel対応）
+    </a>
+</div>
 </body>
 </html>

@@ -2,16 +2,8 @@
 
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0; /* 20px から 0 に変更 */
     background-color: #f4f4f9;
-}
-.container {
-    max-width: 600px;
-    margin: auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 h2 {
     color: #333;
@@ -77,4 +69,75 @@ button:hover {
 
 #deadline {
     margin-bottom: 20px; /* ボタンとの間の余白 */
+}
+
+/* --- 追加・修正するコード --- */
+
+/* --- 1. PC用の基本設定 --- */
+.container {
+    max-width: 1100px;       /* PCでは最大1100px */
+    width: 95%;             /* 画面が1100pxより小さい時は画面幅の95%に */
+    margin: 30px auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-sizing: border-box; /* パディングを幅に含める設定（重要！） */
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.list-header h2 {
+    margin: 0;
+}
+
+.history-link {
+    font-size: 0.9em;
+    text-decoration: none;
+    color: #007bff;
+}
+
+
+/* ★スマホ対応：画面幅が 600px 以下の時の設定 */
+@media (max-width: 600px) {
+    .container {
+        width: 100%;        /* スマホでは画面横幅いっぱいに使う */
+        margin: 0;          /* 外側の余白をなくす（お好みで10px程度にしてもOK） */
+        padding: 20px 15px; /* 上下の余白20px、左右の余白15px */
+        border-radius: 0;   /* スマホでは角丸をなくすとスッキリします */
+        box-shadow: none;   /* スマホでは影を消してフラットに */
+    }
+
+    h2 {
+        font-size: 1.2em; /* 見出しを少し小さく */
+    }
+
+    .search-box {
+        padding: 10px;   /* 検索ボックスもコンパクトに */
+        flex-direction: column; /* 縦並びにする */
+    }
+
+    /* テーブルを包む要素に横スクロールを許可 */
+    .table-container {
+        width: 100%;
+        overflow-x: auto; /* 横方向に突き出た分をスクロールさせる */
+        -webkit-overflow-scrolling: touch; /* iPhoneでのスクロールを滑らかにする */
+        border: 1px solid #eee; /* どこまでが表か分かりやすくする */
+    }
+
+    table {
+        min-width: 800px; /* ★重要：表が潰れないよう、最低限必要な幅を確保する */
+    }
+
+     /* タイトルとリンクの縦並び調整 */
+    .list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
 }
